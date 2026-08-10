@@ -1,0 +1,62 @@
+name: "Zoraxy"
+description: "A general purpose HTTP reverse proxy and forwarding tool"
+version: "3.3.3-1"
+slug: "zoraxy"
+url: "https://github.com/driin0/home-assistant-apps/tree/main/zoraxy"
+image: "ghcr.io/driin0/zoraxy"
+init: false
+
+arch:
+  - aarch64
+  - amd64
+
+startup: "services"
+
+panel_title: "Zoraxy"
+panel_icon: mdi:web-box
+
+webui: "http://[HOST]:[PORT:8000]"
+
+ports:
+  80/tcp: 80
+  443/tcp: 443
+  8000/tcp: 8000
+
+options:
+  noauth: false
+  fastgeoip: true
+  plugin: "plugin"
+
+schema:
+  # === MAIN OPTIONS ===
+  noauth: bool
+  fastgeoip: bool
+
+  # === ADVANCED OPTIONS ===
+  plugin: str?
+  tz: str?
+  autorenew: int?
+  cfgupgrade: bool?
+  db: list(auto|leveldb|boltdb)?
+  earlyrenew: int?
+  enablelog: bool?
+  mdns: bool?
+  mdnsname: str?
+  sshlb: bool?
+  update_geoip: bool?
+  acmetestmode: bool?
+  version: bool?
+  webroot: str?
+  lego_azure_bypass_deprecation: bool?
+
+  # === AZURE DNS (ACME) ===
+  azure_client_id: str?
+  azure_tenant_id: str?
+  azure_subscription_id: str?
+  azure_client_certificate_path: str?
+  azure_client_secret: str?
+
+map:
+  - type: addon_config
+    read_only: false
+    path: /config

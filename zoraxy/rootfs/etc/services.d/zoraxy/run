@@ -1,0 +1,89 @@
+#!/usr/bin/with-contenv bashio
+# ==============================================================================
+# Start the Zoraxy service
+# ==============================================================================
+
+# Helper: read option with fallback default (for optional schema fields)
+config_get() {
+    local key="$1"
+    local default="$2"
+    if bashio::config.has_value "${key}"; then
+        bashio::config "${key}"
+    else
+        echo "${default}"
+    fi
+}
+
+# ===============================
+#       RESOLVE CONFIGURATION
+# ===============================
+
+OPT_NOAUTH="$(bashio::config 'noauth')"
+OPT_FASTGEOIP="$(bashio::config 'fastgeoip')"
+OPT_PLUGIN="$(bashio::config 'plugin')"
+OPT_CFGUPGRADE="$(config_get 'cfgupgrade' 'true')"
+OPT_ENABLELOG="$(config_get 'enablelog' 'true')"
+OPT_MDNS="$(config_get 'mdns' 'true')"
+OPT_SSHLB="$(config_get 'sshlb' 'false')"
+OPT_UPDATE_GEOIP="$(config_get 'update_geoip' 'false')"
+OPT_ACMETESTMODE="$(config_get 'acmetestmode' 'false')"
+OPT_VERSION="$(config_get 'version' 'false')"
+OPT_DB="$(config_get 'db' 'auto')"
+OPT_AUTORENEW="$(config_get 'autorenew' '86400')"
+OPT_EARLYRENEW="$(config_get 'earlyrenew' '30')"
+OPT_MDNSNAME="$(config_get 'mdnsname' '')"
+OPT_WEBROOT="$(config_get 'webroot' './www')"
+OPT_TZ="$(config_get 'tz' 'Etc/UTC')"
+OPT_LEGO_AZURE="$(config_get 'lego_azure_bypass_deprecation' 'false')"
+
+# ===============================
+#       APPLY ENV VARS
+# ===============================
+
+export TZ="${OPT_TZ}"
+
+[ "${OPT_LEGO_AZURE}" = "true" ] && export LEGO_AZURE_BYPASS_DEPRECATION=true
+
+bashio::config.has_value 'azure_client_id'             && export AZURE_CLIENT_ID="$(bashio::config 'azure_client_id')"
+bashio::config.has_value 'azure_tenant_id'             && export AZURE_TENANT_ID="$(bashio::config 'azure_tenant_id')"
+bashio::config.has_value 'azure_subscription_id'       && export AZURE_SUBSCRIPTION_ID="$(bashio::config 'azure_subscription_id')"
+bashio::config.has_value 'azure_client_certificate_path' && export AZURE_CLIENT_CERTIFICATE_PATH="$(bashio::config 'azure_client_certificate_path')"
+bashio::config.has_value 'azure_client_secret'         && export AZURE_CLIENT_SECRET="$(bashio::config 'azure_client_secret')"
+
+# Warn on dangerous options
+[ "${OPT_NOAUTH}" = "true" ] && bashio::log.warning "Authentication is disabled!"
+[ "${OPT_SSHLB}"  = "true" ] && bashio::log.warning "SSH loopback is enabled!"
+
+# ===============================
+#        RUN APPLICATION
+# ===============================
+
+bashio::log.info "Updating CA certificates..."
+update-ca-certificates
+
+cd /config || bashio::exit.nok "Failed to cd into /config"
+
+if [ "${OPT_UPDATE_GEOIP}" = "true" ]; then
+    bashio::log.info "Updating GeoIP data..."
+    zoraxy -update_geoip=true
+    bashio::log.info "GeoIP update complete."
+fi
+
+bashio::log.info "Starting Zoraxy..."
+exec zoraxy \
+    -port=:8000 \
+    -docker=true \
+    -noauth="${OPT_NOAUTH}" \
+    -fastgeoip="${OPT_FASTGEOIP}" \
+    -cfgupgrade="${OPT_CFGUPGRADE}" \
+    -enablelog="${OPT_ENABLELOG}" \
+    -mdns="${OPT_MDNS}" \
+    -sshlb="${OPT_SSHLB}" \
+    -acmetestmode="${OPT_ACMETESTMODE}" \
+    -version="${OPT_VERSION}" \
+    -db="${OPT_DB}" \
+    -autorenew="${OPT_AUTORENEW}" \
+    -earlyrenew="${OPT_EARLYRENEW}" \
+    -mdnsname="${OPT_MDNSNAME}" \
+    -plugin="${OPT_PLUGIN}" \
+    -webroot="${OPT_WEBROOT}"

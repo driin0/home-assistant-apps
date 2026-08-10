@@ -1,0 +1,101 @@
+configuration:
+  noauth:
+    name: "Disable Authentication"
+    description: "Disable authentication for management interface (default: false)."
+
+  fastgeoip:
+    name: "Fast GeoIP"
+    description: "Enable high speed geoip lookup (default: true)."
+
+  tz:
+    name: "Timezone"
+    description: "Define timezone using standard tzdata values (default: Etc/UTC)."
+
+  autorenew:
+    name: "Auto Renew Interval"
+    description: "ACME auto TLS/SSL certificate renew check interval in seconds (default: 86400)."
+
+  cfgupgrade:
+    name: "Auto Config Upgrade"
+    description: "Enable auto config upgrade if breaking change is detected (default: true)."
+
+  db:
+    name: "Database Backend"
+    description: "Database backend to use (auto, leveldb, boltdb) (default: auto)."
+
+  earlyrenew:
+    name: "Early Renew Days"
+    description: "Number of days before expiry to renew certificates (default: 30)."
+
+  enablelog:
+    name: "Enable Logging"
+    description: "Enable system-wide logging (default: true)."
+
+  mdns:
+    name: "Enable mDNS"
+    description: "Enable mDNS scanner and transponder (default: true)."
+
+  mdnsname:
+    name: "mDNS Name"
+    description: "Custom mDNS hostname. Leave empty to use default (default: empty)."
+
+  plugin:
+    name: "Plugin Path"
+    description: >
+      Directory for Zoraxy plugins.
+      Set to "plugin" to use /config/plugin (persistent).
+
+  acmetestmode:
+    name: "ACME Test Mode"
+    description: "Run ACME in test/staging mode. Use to test certificate issuance without hitting rate limits (default: false)."
+
+  sshlb:
+    name: "Enable SSH Loopback"
+    description: "Allow loopback web SSH connection (DANGER) (default: false)."
+
+  update_geoip:
+    name: "Update GeoIP"
+    description: "Download the latest GeoIP data, then start normally (default: false)."
+
+  version:
+    name: "Show Version"
+    description: "Show version of this server (default: false)."
+
+  webroot:
+    name: "Web Root"
+    description: "Static web server root folder (default: ./www)."
+
+  lego_azure_bypass_deprecation:
+    name: "Lego Azure Bypass Deprecation"
+    description: >
+      Temporarily reactivate the deprecated 'azure' DNS provider for ACME.
+      WARNING: The 'azure' provider is deprecated. Migrate to 'azuredns' ASAP.
+      (default: false).
+
+  azure_client_id:
+    name: "Azure Client ID"
+    description: >
+      Application (client) ID of the Azure App Registration used for DNS challenge.
+      Set AuthMethod to 'env' in Zoraxy's ACME DNS credentials form.
+
+  azure_tenant_id:
+    name: "Azure Tenant ID"
+    description: "Directory (tenant) ID of the Azure Active Directory."
+
+  azure_subscription_id:
+    name: "Azure Subscription ID"
+    description: "Azure Subscription ID containing the DNS zones."
+
+  azure_client_certificate_path:
+    name: "Azure Client Certificate Path"
+    description: >
+      Path to the PFX certificate file inside the container (e.g. /config/certs/azure-dns.pfx).
+      Copy the .pfx into a certs/ folder inside this app's directory under
+      /addon_configs/ on the Home Assistant host. The exact directory name is
+      prefixed with the repository identifier, so read it from the Configuration
+      tab rather than guessing it.
+      The PFX must be generated with legacy SHA1/3DES algorithms.
+
+  azure_client_secret:
+    name: "Azure Client Secret"
+    description: "Client secret for the Azure App Registration (alternative to certificate)."

@@ -1,0 +1,31 @@
+Home Assistant app packaging for Zoraxy
+Copyright (C) 2026 driin0
+
+This program is free software: you can redistribute it and/or modify it under
+the terms of the GNU Affero General Public License as published by the Free
+Software Foundation, either version 3 of the License, or (at your option) any
+later version. See the LICENSE file for the full text.
+
+--------------------------------------------------------------------------------
+Bundled software
+--------------------------------------------------------------------------------
+
+This repository packages, and the container images it publishes distribute,
+the following third-party software:
+
+  Zoraxy
+  Copyright (C) Toby Chui
+  Licensed under the GNU Affero General Public License v3.0
+  Source: https://github.com/tobychui/zoraxy
+
+The Zoraxy binary is copied unmodified from the official upstream container
+image zoraxydocker/zoraxy, which is documented in the upstream repository under
+docker/ and maintained by PassiveLemon (https://github.com/PassiveLemon) as the
+project's Docker compatibility maintainer.
+
+No modifications are made to Zoraxy itself. This repository contributes only the
+Home Assistant packaging: the container definition, the s6 service, the option
+schema and the documentation.
+
+Zoraxy is a project of Toby Chui. This repository is not affiliated with, nor
+endorsed by, the Zoraxy project or the Home Assistant project.
