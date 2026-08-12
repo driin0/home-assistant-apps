@@ -48,10 +48,10 @@ if __name__ == "__main__":
     # Patch tool manager to track call counts, latency and errors
     _orig_call = mcp._tool_manager.call_tool
 
-    async def _tracked_call(name: str, arguments: dict, **kwargs):
+    async def _tracked_call(name: str, arguments: dict, *args, **kwargs):
         t0 = time.monotonic()
         try:
-            result = await _orig_call(name, arguments, **kwargs)
+            result = await _orig_call(name, arguments, *args, **kwargs)
             stats.record_call(name, (time.monotonic() - t0) * 1000)
             return result
         except Exception as e:
@@ -63,7 +63,9 @@ if __name__ == "__main__":
 
     threading.Thread(target=start_web_ui, daemon=True, name="web-ui").start()
 
-    app = mcp.streamable_http_app()
+    # 2.0 defaults the path to /mcp and the host to 127.0.0.1; this add-on serves
+    # on / for reverse proxies and must listen on every interface.
+    app = mcp.streamable_http_app(streamable_http_path="/", host="0.0.0.0")
 
     if MCP_SECRET:
         _secret_bytes = MCP_SECRET.encode("utf-8")
@@ -80,7 +82,7 @@ if __name__ == "__main__":
 
     uvicorn.run(
         app,
-        host=mcp.settings.host,
-        port=mcp.settings.port,
+        host="0.0.0.0",
+        port=MCP_PORT,
         log_level=mcp.settings.log_level.lower(),
     )

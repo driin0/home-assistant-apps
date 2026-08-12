@@ -4,7 +4,7 @@ import os
 import re
 
 from dotenv import load_dotenv
-from mcp.server.fastmcp import FastMCP
+from mcp.server.mcpserver import MCPServer
 
 load_dotenv()
 
@@ -30,7 +30,9 @@ HEADERS = {
     "Content-Type": "application/json",
 }
 
-mcp = FastMCP("Home Assistant Advanced", host="0.0.0.0", port=MCP_PORT, streamable_http_path="/")
+# host, port and the HTTP path moved out of the constructor in MCP SDK 2.0:
+# they are arguments of streamable_http_app(), see server.py.
+mcp = MCPServer("Home Assistant Advanced")
 
 HELPER_DOMAINS = {
     "input_boolean", "input_number", "input_text",
