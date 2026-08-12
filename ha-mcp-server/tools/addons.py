@@ -62,6 +62,37 @@ def list_addons(search: str = "") -> list:
     return sorted(out, key=lambda x: (x.get("name") or "").lower())
 
 
+# Option names whose value is a credential. Matched as substrings, so
+# "mcp_secret" and "telegram_api_token" are both caught — but not
+# "alexa_keywords", which a bare "key" would have swallowed.
+_SECRET_HINTS = (
+    "secret", "token", "password", "passwd", "passphrase",
+    "credential", "api_key", "apikey", "private_key", "access_key",
+)
+# Names that are a credential on their own rather than as part of a word.
+_SECRET_EXACT = {"key", "auth", "pass", "pin", "certificate", "cert"}
+
+
+def _redact_options(options: dict) -> dict:
+    """Replace option values that look like credentials.
+
+    Add-on options routinely hold secrets — this add-on's own mcp_secret among
+    them — and get_addon can be called by any client that reaches the MCP
+    endpoint. Returning them verbatim hands a credential to whoever asks, so
+    the value is replaced while the key stays visible: the caller still learns
+    that the option is set.
+    """
+    redacted = {}
+    for name, value in (options or {}).items():
+        lowered = name.lower()
+        sensitive = lowered in _SECRET_EXACT or any(h in lowered for h in _SECRET_HINTS)
+        if sensitive and value not in (None, "", False):
+            redacted[name] = "<redacted>"
+        else:
+            redacted[name] = value
+    return redacted
+
+
 @mcp.tool()
 def get_addon(slug: str) -> dict:
     """
@@ -69,6 +100,9 @@ def get_addon(slug: str) -> dict:
 
     slug: add-on slug, e.g. 'core_mosquitto', 'a0d7b954_zigbee2mqtt'
     Use list_addons() to discover slugs.
+
+    Option values that look like credentials are returned as "<redacted>".
+    The option name is still shown, so it is clear whether it is set.
     """
     err = _check_supervisor()
     if err:
@@ -86,7 +120,7 @@ def get_addon(slug: str) -> dict:
         "update_available": d.get("update_available", False),
         "state": d.get("state"),
         "boot": d.get("boot"),         # auto | manual
-        "options": d.get("options", {}),
+        "options": _redact_options(d.get("options", {})),
         "network": d.get("network"),
         "homeassistant_api": d.get("homeassistant_api", False),
         "ingress": d.get("ingress", False),

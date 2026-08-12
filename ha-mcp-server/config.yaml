@@ -1,6 +1,6 @@
 name: "HA MCP Server"
 description: "Custom MCP server for Claude Code — exposes Home Assistant REST and WebSocket APIs as tools"
-version: "1.0.0"
+version: "1.0.1"
 slug: "ha_mcp_server"
 init: false
 homeassistant_api: true

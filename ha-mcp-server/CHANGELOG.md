@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.1 — 2026-08-12
+
+- Security: `get_addon` returned add-on options verbatim, including the values that are credentials — this add-on's own `mcp_secret` among them. Any client reaching the MCP endpoint could read them. Option values whose name looks like a credential are now returned as `<redacted>`; the option name still appears, so a caller can tell the option is set.
+
 ## 1.0.0 — 2026-08-12
 
 First public release.
