@@ -237,5 +237,13 @@ The web UI port is internal only and never needs to be opened through your firew
 
 ## Disclaimer
 
-This is an unofficial Home Assistant add-on.
-Not affiliated with the Home Assistant project or Anthropic.
+This is an unofficial app. It is not affiliated with, endorsed by, or supported
+by the Open Home Foundation, the Home Assistant project, or Anthropic.
+
+The icon and logo include the Home Assistant logomark and the Model Context
+Protocol mark to show what this app connects, not to suggest that either
+project produced or approved it. Home Assistant and its logo are trademarks of
+the [Open Home Foundation](https://www.openhomefoundation.org/); the Model
+Context Protocol and its mark belong to [Anthropic](https://www.anthropic.com/).
+All trademarks are the property of their respective owners, and this app is
+distributed free of charge under AGPL-3.0.

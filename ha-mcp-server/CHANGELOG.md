@@ -1,5 +1,17 @@
 # Changelog
 
+## 1.0.0 — 2026-08-12
+
+First public release.
+
+- Migrated to MCP SDK 2.0 (`MCPServer`); the previous 1.x line is no longer supported
+- New options: `remote_prefixes`, `alexa_keywords`, `default_language`
+- Added `logo.png` for the add-on store
+- Granted the Supervisor API permissions the add-on tools require
+- Fixed tools that had never worked: the three device automation listings, tag rename and delete, dashboard update and delete, and both Assist pipeline create and update
+- Fixed unhandled responses in `list_calendars`, `get_error_log` and `toggle_automation`
+- Vacuum tools no longer default to a specific robot; they resolve the first vacuum entity
+
 ## 0.0.66 — 2026-08-12
 
 - New option: `remote_prefixes` — the entity_id prefixes of remote instances are now configuration rather than built-in. `get_energy_summary` groups by them when set, and falls back entirely to the area registry when empty, which is the default

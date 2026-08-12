@@ -100,3 +100,11 @@ Point your reverse proxy at that URL. Clients outside HA still reach the MCP thr
 - No token configuration needed — the add-on uses the Supervisor token automatically.
 - The server accesses HA internally via the Supervisor proxy (`http://supervisor/core`), so REST and WebSocket both work without a long-lived access token.
 - The MCP endpoint is served at `/` — compatible with reverse proxies that strip the path prefix.
+
+## Disclaimer
+
+This is an unofficial app, not affiliated with or endorsed by the Open Home
+Foundation, the Home Assistant project, or Anthropic. The icon and logo include
+the Home Assistant logomark and the Model Context Protocol mark to show what
+this app connects; both are trademarks of their respective owners. The app is
+distributed free of charge under AGPL-3.0.
