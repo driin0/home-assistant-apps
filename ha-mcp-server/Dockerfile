@@ -1,5 +1,8 @@
-ARG BUILD_FROM
-FROM $BUILD_FROM
+# The builder no longer injects BUILD_FROM from build.yaml, so the default here
+# is what actually gets used. base-python is a manifest list covering amd64 and
+# arm64, which is why no per-architecture image is named.
+ARG BUILD_FROM=ghcr.io/home-assistant/base-python:3.13-alpine3.24
+FROM ${BUILD_FROM}
 
 # Build tools needed for native Python extensions on Alpine
 RUN apk add --no-cache jq gcc musl-dev python3-dev

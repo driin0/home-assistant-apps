@@ -22,7 +22,6 @@ arch:
   - amd64
 
 startup: services
-boot: auto
 
 ports:
   47821/tcp: 47821
