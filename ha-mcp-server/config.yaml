@@ -31,6 +31,7 @@ options:
   mcp_allow_no_auth: false
   remote_prefixes: ""
   alexa_keywords: "echo,alexa"
+  default_language: ""
 
 schema:
   mcp_port: int
@@ -38,3 +39,4 @@ schema:
   mcp_allow_no_auth: bool?
   remote_prefixes: str?
   alexa_keywords: str?
+  default_language: str?

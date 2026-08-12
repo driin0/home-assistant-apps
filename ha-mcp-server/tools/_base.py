@@ -85,17 +85,30 @@ ALEXA_KEYWORDS = tuple(
     if kw.strip()
 )
 
+CONFIGURED_LANGUAGE = os.getenv("HA_DEFAULT_LANGUAGE", "").strip()
+
 _DEFAULT_LANGUAGE = ""
 
 
 def default_language() -> str:
-    """The language configured in Home Assistant, fetched once and cached.
+    """The language spoken by the TTS and conversation tools when none is given.
 
-    Used as the default for TTS and conversation tools, so that an instance set
-    up in any language behaves correctly without configuring it twice. Falls
-    back to English if /api/config cannot be read.
+    Resolved once and cached, in this order:
+
+    1. the `default_language` option, when set;
+    2. the language reported by /api/config;
+    3. English.
+
+    Step 2 is only a guess, and deliberately overridable: Home Assistant derives
+    entity_ids from that setting, so an instance is often kept in English to get
+    English entity_ids while the people using it speak something else — the
+    interface language is a per-user profile preference and is not exposed here.
+    Set the option whenever the instance should speak a different language from
+    the one it is configured in.
     """
     global _DEFAULT_LANGUAGE
+    if CONFIGURED_LANGUAGE:
+        return CONFIGURED_LANGUAGE
     if not _DEFAULT_LANGUAGE:
         try:
             import httpx

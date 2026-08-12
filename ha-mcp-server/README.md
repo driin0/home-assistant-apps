@@ -90,12 +90,23 @@ The defaults match how the Alexa Media Player integration names its entities. Ad
 your own if a speaker group is named after a room or the household rather than
 after Alexa. Leave it empty to disable the detection entirely.
 
-### A note on language
+### `default_language` (default: empty)
 
 `send_tts`, `broadcast_tts`, `process_conversation` and `create_assist_pipeline`
-take an optional `language`. When it is omitted the language configured in Home
-Assistant is used, read once from `/api/config`, with English as the fallback if
-that call fails. There is nothing to configure here.
+take an optional `language`. When a call omits it, the language is resolved in
+this order:
+
+1. this option, when set;
+2. the language reported by `/api/config`;
+3. English.
+
+Leave it empty and step 2 usually does the right thing. Set it when the instance
+should speak a language different from the one it is configured in — a common
+case, because Home Assistant derives entity IDs from that setting, so many
+instances are deliberately kept in English to obtain English entity IDs while
+the people using them speak something else. The interface language you see in
+the UI does not help here: it is a per-user profile preference and is not
+exposed by the API.
 
 ---
 

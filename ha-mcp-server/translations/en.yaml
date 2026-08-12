@@ -27,3 +27,10 @@ configuration:
       announced to through alexa_media instead of the regular TTS service. The defaults match
       how the Alexa Media Player integration names its entities; add your own if a speaker
       group is named after a room or the household. Leave empty to disable the detection.
+  default_language:
+    name: Spoken language
+    description: >
+      Optional. Language code used by the TTS and conversation tools when a call does not
+      specify one, e.g. it, de, fr. Leave empty to follow the language Home Assistant is
+      configured with. Set it when the two differ — instances are often kept in English to
+      obtain English entity IDs while the people using them speak another language.
