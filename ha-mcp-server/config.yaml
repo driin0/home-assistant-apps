@@ -4,6 +4,11 @@ version: "0.0.66"
 slug: "ha_mcp_server"
 init: false
 homeassistant_api: true
+# Required by the add-on and Supervisor tools: without them /addons and
+# /supervisor/info answer 403, and list_addons, get_addon, get_addon_logs,
+# start/stop/restart_addon, call_addon_api and get_supervisor_info all fail.
+hassio_api: true
+hassio_role: manager
 panel_icon: mdi:robot-happy
 
 ingress: true
