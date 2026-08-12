@@ -17,6 +17,9 @@ Or add it manually:
 3. Paste `https://github.com/driin0/home-assistant-apps` and confirm
 4. Install the app
 
+Both apps ship prebuilt multi-architecture images, so installing pulls an image
+rather than building one on your hardware.
+
 ## Apps
 
 ### [Zoraxy](./zoraxy)
@@ -29,10 +32,41 @@ a plugin system and a web management interface. Packaged on the official Home
 Assistant base image with native `bashio` configuration handling and prebuilt
 multi-architecture images.
 
+### [HA MCP Server](./ha-mcp-server)
+
+![Supports aarch64 Architecture][aarch64-shield]
+![Supports amd64 Architecture][amd64-shield]
+
+Exposes Home Assistant's REST and WebSocket APIs as **182 MCP tools**, so that
+an MCP client — Claude Code among others — can drive the instance directly:
+lights, climate, covers, media, alarm and cameras; automations, scripts, scenes,
+helpers and dashboards; the area, floor, label, device and entity registries;
+add-ons, HACS, backups and system health; history, logbook, statistics and
+energy.
+
+Authentication is a bearer token, and the add-on reaches Home Assistant through
+the Supervisor, so no long-lived access token has to be created. A status
+dashboard is available in the sidebar through ingress.
+
+**It can also delete things** — automations, dashboards, helpers, users. Every
+tool was exercised against a live instance before release, but treat it as
+what it is: a broad, powerful interface to your home.
+
 ## Licence
 
-AGPL-3.0. Zoraxy itself is AGPL-3.0 software by Toby Chui; see [NOTICE](./NOTICE)
-for the full attribution.
+AGPL-3.0.
+
+Zoraxy itself is AGPL-3.0 software by Toby Chui; see [NOTICE](./NOTICE) for the
+full attribution. HA MCP Server is original work in this repository.
+
+## Trademarks
+
+Home Assistant and its logo are trademarks of the
+[Open Home Foundation](https://www.openhomefoundation.org/). The Model Context
+Protocol and its mark belong to [Anthropic](https://www.anthropic.com/). App
+icons and logos reference those marks to show what each app connects, not to
+imply that either project produced or endorsed anything here. All trademarks
+are the property of their respective owners.
 
 [aarch64-shield]: https://img.shields.io/badge/aarch64-yes-green.svg
 [amd64-shield]: https://img.shields.io/badge/amd64-yes-green.svg
