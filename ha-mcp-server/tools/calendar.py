@@ -6,9 +6,17 @@ from tools._base import mcp, HA_URL, HEADERS, _ws
 
 @mcp.tool()
 def list_calendars() -> list:
-    """List all calendar entities."""
+    """
+    List all calendar entities.
+
+    Returns an empty list on an instance with no calendars: Home Assistant only
+    registers /api/calendars once the calendar integration has loaded, so its
+    absence means "none", not a failure.
+    """
     with httpx.Client() as client:
         r = client.get(f"{HA_URL}/api/calendars", headers=HEADERS, timeout=10)
+        if r.status_code == 404:
+            return []
         r.raise_for_status()
         return r.json()
 

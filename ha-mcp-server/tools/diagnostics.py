@@ -110,9 +110,21 @@ def get_logbook(hours: int = 6, entity_id: str = "") -> list:
 
 @mcp.tool()
 def get_error_log() -> str:
-    """Get the Home Assistant error log."""
+    """
+    Get the Home Assistant error log.
+
+    Not every installation serves /api/error_log — it is absent on recent cores
+    and when the log is written elsewhere — so a missing endpoint is reported as
+    a message rather than raised.
+    """
     with httpx.Client() as client:
         r = client.get(f"{HA_URL}/api/error_log", headers=HEADERS, timeout=10)
+        if r.status_code == 404:
+            return (
+                "error_log_not_available: this Home Assistant instance does not serve "
+                "/api/error_log. Read the log from Settings -> System -> Logs, or use "
+                "get_logbook() for entity activity."
+            )
         r.raise_for_status()
         return r.text
 
