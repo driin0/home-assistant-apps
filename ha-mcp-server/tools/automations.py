@@ -267,7 +267,7 @@ def list_device_triggers(device_id: str) -> list:
     state changes, motion detection events, etc. specific to this device.
     Each trigger object can be used directly in the 'trigger' list of create_automation().
     """
-    result = _ws({"type": "device_automation/list_triggers", "device_id": device_id})
+    result = _ws({"type": "device_automation/trigger/list", "device_id": device_id})
     if not result.get("success", True):
         err = result.get("error", {})
         return [{"error": err.get("code", "unknown"), "detail": err.get("message", "")}]
@@ -285,7 +285,7 @@ def list_device_conditions(device_id: str) -> list:
     is a sensor above/below threshold, etc.
     Each condition object can be used directly in the 'condition' list of create_automation().
     """
-    result = _ws({"type": "device_automation/list_conditions", "device_id": device_id})
+    result = _ws({"type": "device_automation/condition/list", "device_id": device_id})
     if not result.get("success", True):
         err = result.get("error", {})
         return [{"error": err.get("code", "unknown"), "detail": err.get("message", "")}]
@@ -303,7 +303,7 @@ def list_device_actions(device_id: str) -> list:
     lock/unlock, etc. specific to this device.
     Each action object can be used directly in the 'action' list of create_automation().
     """
-    result = _ws({"type": "device_automation/list_actions", "device_id": device_id})
+    result = _ws({"type": "device_automation/action/list", "device_id": device_id})
     if not result.get("success", True):
         err = result.get("error", {})
         return [{"error": err.get("code", "unknown"), "detail": err.get("message", "")}]
