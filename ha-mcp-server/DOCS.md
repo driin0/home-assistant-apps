@@ -83,13 +83,17 @@ If you reach the MCP endpoint exclusively through a reverse proxy (Zoraxy, NGINX
 2. Clear the host port next to `47821/tcp` (leave the field empty) and save.
 3. Restart the add-on.
 
-The MCP endpoint will no longer be published on the host interface. Other add-ons on the `hassio` Docker network keep full access through the Supervisor-generated hostname. The exact name is shown in the add-on startup log and on the add-on **Info** page — it looks like:
+The MCP endpoint will no longer be published on the host interface. Other add-ons on the `hassio` Docker network keep full access through the Supervisor-generated hostname:
 
 ```
-http://<installation-slug>-ha-mcp-server:47821
+http://25373aee-ha-mcp-server:47821
 ```
 
-The slug is an opaque identifier unique to your installation, and it is stable (it only changes if you uninstall and reinstall the add-on from scratch). Point your reverse proxy at that URL. Clients outside HA still reach the MCP through the proxy's public hostname over HTTPS, while the raw `47821/tcp` endpoint is no longer reachable from the LAN.
+That prefix is not random and not specific to your machine: the Supervisor derives it from the repository URL, as the first eight characters of its SHA1. Everyone who adds this repository as `https://github.com/driin0/home-assistant-apps` therefore gets the same hostname.
+
+It does depend on the exact string you added, though — a trailing slash or a `.git` suffix produces a different prefix. If the name above does not resolve, read the real one from the add-on startup log or the add-on **Info** page.
+
+Point your reverse proxy at that URL. Clients outside HA still reach the MCP through the proxy's public hostname over HTTPS, while the raw `47821/tcp` endpoint is no longer reachable from the LAN.
 
 ## Notes
 
