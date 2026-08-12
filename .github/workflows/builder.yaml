@@ -1,7 +1,11 @@
 name: Builder
 
 env:
-  MONITORED_FILES: "config.json config.yaml config.yml Dockerfile rootfs"
+  # Any of these changing inside an app directory triggers a rebuild of that app.
+  # rootfs covers apps that ship a filesystem overlay; the Python entries cover
+  # apps whose source lives in the build context itself — without them a code-only
+  # change would silently leave the published image on the previous version.
+  MONITORED_FILES: "config.json config.yaml config.yml Dockerfile rootfs requirements.txt run.sh server.py web.py stats.py tools"
 
 on:
   workflow_dispatch:

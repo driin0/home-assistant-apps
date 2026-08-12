@@ -1,0 +1,40 @@
+name: "HA MCP Server"
+description: "Custom MCP server for Claude Code — exposes Home Assistant REST and WebSocket APIs as tools"
+version: "0.0.66"
+slug: "ha_mcp_server"
+init: false
+homeassistant_api: true
+panel_icon: mdi:robot-happy
+
+ingress: true
+ingress_port: 47822
+
+url: "https://github.com/driin0/home-assistant-apps/tree/main/ha-mcp-server"
+image: "ghcr.io/driin0/ha-mcp-server"
+
+arch:
+  - aarch64
+  - amd64
+
+startup: services
+boot: auto
+
+ports:
+  47821/tcp: 47821
+
+ports_description:
+  47821/tcp: "MCP HTTP server (Claude Code). Leave empty to keep the endpoint internal to the hassio Docker network — other add-ons (e.g. a reverse proxy) can still reach it via the Supervisor-generated hostname (e.g. http://<slug>-ha-mcp-server:47821, visible in the add-on log and in the add-on Info page)"
+
+options:
+  mcp_port: 47821
+  mcp_secret: ""
+  mcp_allow_no_auth: false
+  remote_prefixes: ""
+  alexa_keywords: "echo,alexa"
+
+schema:
+  mcp_port: int
+  mcp_secret: str?
+  mcp_allow_no_auth: bool?
+  remote_prefixes: str?
+  alexa_keywords: str?

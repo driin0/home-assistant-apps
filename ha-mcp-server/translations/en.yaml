@@ -1,0 +1,29 @@
+configuration:
+  mcp_port:
+    name: MCP port
+    description: TCP port the MCP HTTP server listens on. Default is 47821.
+  mcp_secret:
+    name: MCP secret
+    description: >
+      Bearer token to protect the MCP endpoint. Required unless Allow no auth is enabled.
+      Generate a strong value with: openssl rand -base64 32
+  mcp_allow_no_auth:
+    name: Allow no auth
+    description: >
+      Set to true to run without authentication. Only use this on a trusted local network.
+      The add-on will refuse to start if this is false and MCP secret is not set.
+  remote_prefixes:
+    name: Remote instances
+    description: >
+      Optional. Comma-separated list of other Home Assistant instances whose entities are
+      exposed on this one under a shared entity_id prefix, so that tools grouping by
+      location report them separately from the local areas. Each item is either a name —
+      the prefix then defaults to sensor.<name>_ — or name=prefix for a different
+      convention, e.g. annex,workshop=sensor.ws_ . Leave empty if you run a single instance.
+  alexa_keywords:
+    name: Alexa keywords
+    description: >
+      Comma-separated substrings that mark a media player as an Amazon Echo, which is then
+      announced to through alexa_media instead of the regular TTS service. The defaults match
+      how the Alexa Media Player integration names its entities; add your own if a speaker
+      group is named after a room or the household. Leave empty to disable the detection.
