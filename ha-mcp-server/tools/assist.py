@@ -84,6 +84,10 @@ def create_assist_pipeline(
         "tts_engine": tts_engine or None,
         "tts_language": tts_language or None,
         "tts_voice": tts_voice or None,
+        # Required by the schema even when unset: omitting them fails validation
+        # with "required key not provided", not with a default.
+        "wake_word_entity": None,
+        "wake_word_id": None,
     }
     result = _ws(msg)
     if not result.get("success", True):
@@ -107,8 +111,26 @@ def update_assist_pipeline(
 
     pipeline_id: pipeline ID (use list_assist_pipelines() to find it)
     Only non-empty fields are updated.
+
+    The update command validates the whole pipeline, not the changed fields, so
+    the current values are read first and the changes merged onto them: sending
+    a partial message fails with "required key not provided".
     """
+    current = {}
+    listed = _ws({"type": "assist_pipeline/pipeline/list"})
+    for p in (listed.get("result") or {}).get("pipelines", []):
+        if p.get("id") == pipeline_id:
+            current = p
+            break
+    if not current:
+        return {"error": "not_found", "pipeline_id": pipeline_id,
+                "detail": "No pipeline with that id. Use list_assist_pipelines()."}
+
     msg: dict = {"type": "assist_pipeline/pipeline/update", "pipeline_id": pipeline_id}
+    for field in ("name", "language", "conversation_engine", "conversation_language",
+                  "stt_engine", "stt_language", "tts_engine", "tts_language",
+                  "tts_voice", "wake_word_entity", "wake_word_id"):
+        msg[field] = current.get(field)
     if name:
         msg["name"] = name
     if language:

@@ -1,6 +1,20 @@
 from tools._base import mcp, _ws
 
 
+def _dashboard_id(url_path: str) -> str:
+    """Resolve a dashboard url_path to the id the WebSocket API expects.
+
+    The lovelace/dashboards/update and /delete commands are keyed by
+    dashboard_id and reject url_path outright, while url_path is what a user
+    sees and what list_dashboards() reports — so it is translated here.
+    """
+    result = _ws({"type": "lovelace/dashboards/list"})
+    for d in result.get("result") or []:
+        if d.get("url_path") == url_path:
+            return d.get("id", "")
+    return ""
+
+
 @mcp.tool()
 def list_dashboards() -> list:
     """
@@ -98,7 +112,11 @@ def update_dashboard(
 
     To update the actual views and cards content, use update_dashboard_config() instead.
     """
-    msg: dict = {"type": "lovelace/dashboards/update", "url_path": url_path}
+    dashboard_id = _dashboard_id(url_path)
+    if not dashboard_id:
+        return {"error": "not_found", "url_path": url_path,
+                "detail": "No dashboard with that url_path. Use list_dashboards()."}
+    msg: dict = {"type": "lovelace/dashboards/update", "dashboard_id": dashboard_id}
     if title:
         msg["title"] = title
     if icon:
@@ -156,7 +174,11 @@ def delete_dashboard(url_path: str) -> dict:
     url_path: dashboard URL path (use list_dashboards() to find url_paths).
     Note: the default dashboard cannot be deleted.
     """
-    result = _ws({"type": "lovelace/dashboards/delete", "url_path": url_path})
+    dashboard_id = _dashboard_id(url_path)
+    if not dashboard_id:
+        return {"error": "not_found", "url_path": url_path,
+                "detail": "No dashboard with that url_path. Use list_dashboards()."}
+    result = _ws({"type": "lovelace/dashboards/delete", "dashboard_id": dashboard_id})
     if not result.get("success", True):
         err = result.get("error", {})
         return {"error": err.get("code", "unknown"), "detail": err.get("message", "")}

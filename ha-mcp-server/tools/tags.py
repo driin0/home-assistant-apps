@@ -56,7 +56,7 @@ def update_tag(tag_id: str, name: str) -> dict:
     tag_id: tag ID (use list_tags() to find it)
     name:   new display name
     """
-    result = _ws({"type": "tag/update_tag", "tag_id": tag_id, "name": name})
+    result = _ws({"type": "tag/update", "tag_id": tag_id, "name": name})
     if not result.get("success", True):
         err = result.get("error", {})
         return {"error": err.get("code", "unknown"), "detail": err.get("message", "")}
@@ -70,7 +70,7 @@ def delete_tag(tag_id: str) -> dict:
 
     tag_id: tag ID (use list_tags() to find it)
     """
-    result = _ws({"type": "tag/remove", "tag_id": tag_id})
+    result = _ws({"type": "tag/delete", "tag_id": tag_id})
     if not result.get("success", True):
         err = result.get("error", {})
         return {"error": err.get("code", "unknown"), "detail": err.get("message", "")}

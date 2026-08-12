@@ -131,7 +131,14 @@ def toggle_automation(entity_id: str) -> dict:
             timeout=10,
         )
         r.raise_for_status()
+        # The service call succeeds even for an entity that does not exist, and a
+        # freshly created automation takes a moment to register, so report the
+        # missing state instead of raising on the read-back.
         s = client.get(f"{HA_URL}/api/states/{entity_id}", headers=HEADERS, timeout=10)
+        if s.status_code == 404:
+            return {"entity_id": entity_id, "new_state": None,
+                    "detail": "Toggle sent, but the entity has no state yet — it may "
+                              "not exist, or may still be registering."}
         s.raise_for_status()
         return {"entity_id": entity_id, "new_state": s.json().get("state")}
 
