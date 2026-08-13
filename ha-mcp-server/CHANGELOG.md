@@ -1,5 +1,19 @@
 # Changelog
 
+## 1.1.0
+
+The server now lives in its own repository,
+[driin0/ha-mcp-server](https://github.com/driin0/ha-mcp-server), and this app
+ships the image published from there. Nothing changes in what the app does.
+
+The code that used to sit here **was** the good copy: a second one existed in a
+private Docker repository and had fallen two and a half months behind, with 23
+files differing. Keeping one source ends that.
+
+Build-wise the app no longer installs Python dependencies: it copies them,
+already compiled, from the published image. No compiler toolchain, a smaller
+image, and both distributions provably run the same packages.
+
 ## 1.0.1 — 2026-08-12
 
 - Security: `get_addon` returned add-on options verbatim, including the values that are credentials — this add-on's own `mcp_secret` among them. Any client reaching the MCP endpoint could read them. Option values whose name looks like a credential are now returned as `<redacted>`; the option name still appears, so a caller can tell the option is set.

@@ -1,6 +1,6 @@
 name: "HA MCP Server"
 description: "Custom MCP server for Claude Code — exposes Home Assistant REST and WebSocket APIs as tools"
-version: "1.0.1"
+version: "1.1.0"
 slug: "ha_mcp_server"
 init: false
 homeassistant_api: true
@@ -15,7 +15,7 @@ ingress: true
 ingress_port: 47822
 
 url: "https://github.com/driin0/home-assistant-apps/tree/main/ha-mcp-server"
-image: "ghcr.io/driin0/ha-mcp-server"
+image: "ghcr.io/driin0/ha-mcp-server-app"
 
 arch:
   - aarch64

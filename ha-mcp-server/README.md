@@ -7,6 +7,12 @@
 
 ---
 
+> **The code lives elsewhere.** This directory holds only the Home Assistant
+> packaging — the server itself is developed in
+> [driin0/ha-mcp-server](https://github.com/driin0/ha-mcp-server), and this app
+> ships the image published from there. Bug reports about the tools belong in
+> that repository.
+
 ## About
 
 Custom MCP (Model Context Protocol) server that exposes Home Assistant's REST and WebSocket APIs as tools for Claude Code.
