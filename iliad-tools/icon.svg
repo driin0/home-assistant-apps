@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <linearGradient id="bg" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="64" y2="64">
+      <stop offset="0" stop-color="#22263a"/>
+      <stop offset="1" stop-color="#0f1117"/>
+    </linearGradient>
+    <linearGradient id="body" gradientUnits="userSpaceOnUse" x1="10" y1="28" x2="54" y2="44">
+      <stop offset="0" stop-color="#ff4d63"/>
+      <stop offset="1" stop-color="#e8132a"/>
+    </linearGradient>
+    <radialGradient id="ledGreen" cx="20" cy="36" r="3" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#bbf7d0"/>
+      <stop offset="1" stop-color="#22c55e"/>
+    </radialGradient>
+    <radialGradient id="ledBlue" cx="32" cy="36" r="3" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#bae6fd"/>
+      <stop offset="1" stop-color="#38bdf8"/>
+    </radialGradient>
+    <radialGradient id="ledAmber" cx="44" cy="36" r="3" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#fef3c7"/>
+      <stop offset="1" stop-color="#f59e0b"/>
+    </radialGradient>
+  </defs>
+  <rect width="64" height="64" rx="14" fill="url(#bg)"/>
+  <rect x="16" y="11" width="3" height="19" rx="1.5" fill="#e2e2e8"/>
+  <rect x="45" y="11" width="3" height="19" rx="1.5" fill="#e2e2e8"/>
+  <rect x="10" y="28" width="44" height="16" rx="3" fill="url(#body)"/>
+  <rect x="10" y="28" width="44" height="4" rx="3" fill="#ffffff" opacity="0.08"/>
+  <circle cx="20" cy="36" r="2.6" fill="url(#ledGreen)"/>
+  <circle cx="32" cy="36" r="2.6" fill="url(#ledBlue)"/>
+  <circle cx="44" cy="36" r="2.6" fill="url(#ledAmber)"/>
+  <rect x="10" y="48" width="44" height="6" rx="1.5" fill="#000000" opacity="0.25"/>
+</svg>

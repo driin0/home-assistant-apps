@@ -52,6 +52,25 @@ dashboard is available in the sidebar through ingress.
 tool was exercised against a live instance before release, but treat it as
 what it is: a broad, powerful interface to your home.
 
+### [Iliad Tools](./iliad-tools)
+
+![Supports aarch64 Architecture][aarch64-shield]
+![Supports amd64 Architecture][amd64-shield]
+
+An administration portal for **iliadbox**, the router Iliad sells in Italy,
+which runs Freebox OS. Static DHCP leases, LAN devices with Wake on LAN, WAN
+status with a live bandwidth chart and RRD history, port forwarding, Wi-Fi with
+a neighbouring-network survey, WireGuard VPN with per-router profiles, and a
+generator for Asterisk configuration — the Iliad SIP trunk, internal extensions
+and multi-tenant 3CX trunks — that produces an archive ready to apply.
+
+Router credentials are encrypted at rest with AES-256-GCM behind a master
+password. **The interface is in Italian**, since the router is only sold there.
+
+The application itself lives in
+[driin0/iliad-tools](https://github.com/driin0/iliad-tools); this app ships its
+image for Home Assistant.
+
 ## Licence
 
 AGPL-3.0.
