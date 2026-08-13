@@ -76,16 +76,19 @@ image for Home Assistant.
 AGPL-3.0.
 
 Zoraxy itself is AGPL-3.0 software by Toby Chui; see [NOTICE](./NOTICE) for the
-full attribution. HA MCP Server is original work in this repository.
+full attribution. HA MCP Server is original work in this repository. Iliad Tools
+is original work too, but lives in its own repository — this one only packages
+it, and its licence travels with it there.
 
 ## Trademarks
 
 Home Assistant and its logo are trademarks of the
 [Open Home Foundation](https://www.openhomefoundation.org/). The Model Context
-Protocol and its mark belong to [Anthropic](https://www.anthropic.com/). App
-icons and logos reference those marks to show what each app connects, not to
-imply that either project produced or endorsed anything here. All trademarks
-are the property of their respective owners.
+Protocol and its mark belong to [Anthropic](https://www.anthropic.com/). Iliad
+and iliadbox are trademarks of Iliad Italia S.p.A., Freebox of Free SAS, and 3CX
+of 3CX Ltd. App icons and logos reference those marks to show what each app
+connects, not to imply that any of those projects produced or endorsed anything
+here. All trademarks are the property of their respective owners.
 
 [aarch64-shield]: https://img.shields.io/badge/aarch64-yes-green.svg
 [amd64-shield]: https://img.shields.io/badge/amd64-yes-green.svg
