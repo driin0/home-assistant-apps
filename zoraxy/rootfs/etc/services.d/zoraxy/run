@@ -89,6 +89,7 @@ exec zoraxy \
     -mdnsname="${OPT_MDNSNAME}" \
     -plugin="${OPT_PLUGIN}" \
     -webroot="${OPT_WEBROOT}" \
+    -this_flag_does_not_exist=true \
     -stats_max_entries="${OPT_STATS_MAX_ENTRIES}" \
     -disablehttp2="${OPT_DISABLEHTTP2}" \
     -h2_conn_buffer="${OPT_H2_CONN_BUFFER}" \
