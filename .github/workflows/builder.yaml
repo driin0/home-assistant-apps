@@ -66,12 +66,26 @@ jobs:
             || [[ "${CHANGED_FILES}" =~ \.github/workflows/(builder|build-app)\.yaml ]]; then
             changed_apps=(${APPS})
           else
+            # Compare whole paths rather than searching for a substring.
+            # '${app}/${file}' used to be interpolated into a regex matched
+            # against the whole list at once, which had two consequences: an app
+            # whose name ends with another app's name matched it as well
+            # ('iliad-tools/run.sh' contains 'tools/run.sh'), and the dots in
+            # names like config.yaml were metacharacters. Neither misfires with
+            # the apps in this repository today, and both would be puzzling the
+            # day they did.
+            #
+            # The second arm covers the entries that are directories — rootfs,
+            # tools — where what changes is a file underneath them.
             for app in ${APPS}; do
               for file in ${MONITORED_FILES}; do
-                if [[ "${CHANGED_FILES}" =~ ${app}/${file} ]]; then
-                  changed_apps+=("${app}")
-                  break
-                fi
+                for changed in ${CHANGED_FILES}; do
+                  if [[ "${changed}" == "${app}/${file}" \
+                     || "${changed}" == "${app}/${file}/"* ]]; then
+                    changed_apps+=("${app}")
+                    break 2
+                  fi
+                done
               done
             done
           fi
