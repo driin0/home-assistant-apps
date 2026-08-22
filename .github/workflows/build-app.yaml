@@ -92,7 +92,28 @@ jobs:
             io.hass.description=${{ needs.prepare.outputs.description }}
             ${{ needs.prepare.outputs.url && format('io.hass.url={0}', needs.prepare.outputs.url) || '' }}
           push: ${{ inputs.publish }}
+          # push and load are mutually exclusive in this action: with push the
+          # image goes to the registry, with load it goes to the local engine.
+          # Ask for load whenever we are not publishing, so the verification
+          # step below has something to inspect on pull requests too.
+          load: ${{ !inputs.publish }}
           version: ${{ needs.prepare.outputs.version }}
+
+      - name: Verify the packaging contract
+        shell: bash
+        env:
+          APP: ${{ inputs.app }}
+          IMAGE: ${{ matrix.image }}:${{ needs.prepare.outputs.version }}
+        run: |
+          if [ ! -x "./${APP}/verify.sh" ]; then
+            echo "${APP} ships no verify.sh — nothing to check."
+            exit 0
+          fi
+          # Present locally when the build loaded it, in the registry when the
+          # build pushed it. Either way, what gets checked is the image this job
+          # just produced.
+          docker image inspect "${IMAGE}" >/dev/null 2>&1 || docker pull "${IMAGE}"
+          "./${APP}/verify.sh" "${IMAGE}"
 
   manifest:
     name: Publish multi-arch manifest
