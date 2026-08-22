@@ -1,0 +1,46 @@
+# Upstream flags this app deliberately does not expose as options.
+#
+# verify.sh requires every flag the binary defines to be either passed by the
+# startup script or listed here. That is what turns an upstream release into a
+# failed build instead of a silent omission: when Zoraxy grows a flag, the build
+# fails until someone decides what to do with it.
+#
+# Add a flag here only after deciding against exposing it, and say why.
+
+# --- Paths the app owns -------------------------------------------------------
+# All configuration lives under /config, which is the mapped persistent
+# directory. Letting a user move any of these breaks that mapping, and the
+# add-on has no way to follow them.
+conf
+dbpath
+log
+tmp
+uuid
+
+# --- Recovery and development tools -------------------------------------------
+# Not configuration. 'dev' serves the UI from an external folder and turns on
+# verbose logging; 'reset_ac' resets the admin account and exits. Neither
+# belongs in a form a user can tick by accident.
+dev
+reset_ac
+
+# --- Deferred: proxy timeouts -------------------------------------------------
+# Reasonable candidates, but each one changes how long connections are held
+# open, so exposing them means testing them against real long-running requests
+# first. Revisit when there is a reason to.
+readheadertimeout
+writetimeout
+idletimeout
+
+# --- Deferred: inbound listener defaults --------------------------------------
+# Zoraxy's own UI already owns the inbound listener settings and stores them in
+# its configuration. Exposing them as add-on options would create a second
+# source of truth for the same setting.
+default_inbound_port
+default_inbound_enabled
+
+# --- Deferred: ACME file modes ------------------------------------------------
+# The defaults (0600 for keys, 0644 for certificates) are already correct for a
+# single-purpose container. No use case has come up that needs them changed.
+acmekeymode
+acmepublicmode
