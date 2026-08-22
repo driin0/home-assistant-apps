@@ -34,15 +34,17 @@ OPT_EARLYRENEW="$(config_get 'earlyrenew' '30')"
 OPT_MDNSNAME="$(config_get 'mdnsname' '')"
 OPT_WEBROOT="$(config_get 'webroot' './www')"
 OPT_TZ="$(config_get 'tz' 'Etc/UTC')"
-OPT_LEGO_AZURE="$(config_get 'lego_azure_bypass_deprecation' 'false')"
+OPT_STATS_MAX_ENTRIES="$(config_get 'stats_max_entries' '20000')"
+OPT_DISABLEHTTP2="$(config_get 'disablehttp2' 'false')"
+OPT_H2_CONN_BUFFER="$(config_get 'h2_conn_buffer' '0')"
+OPT_H2_STREAM_BUFFER="$(config_get 'h2_stream_buffer' '0')"
+OPT_H2_MAX_STREAMS="$(config_get 'h2_max_concurrent_streams' '0')"
 
 # ===============================
 #       APPLY ENV VARS
 # ===============================
 
 export TZ="${OPT_TZ}"
-
-[ "${OPT_LEGO_AZURE}" = "true" ] && export LEGO_AZURE_BYPASS_DEPRECATION=true
 
 bashio::config.has_value 'azure_client_id'             && export AZURE_CLIENT_ID="$(bashio::config 'azure_client_id')"
 bashio::config.has_value 'azure_tenant_id'             && export AZURE_TENANT_ID="$(bashio::config 'azure_tenant_id')"
@@ -86,4 +88,9 @@ exec zoraxy \
     -earlyrenew="${OPT_EARLYRENEW}" \
     -mdnsname="${OPT_MDNSNAME}" \
     -plugin="${OPT_PLUGIN}" \
-    -webroot="${OPT_WEBROOT}"
+    -webroot="${OPT_WEBROOT}" \
+    -stats_max_entries="${OPT_STATS_MAX_ENTRIES}" \
+    -disablehttp2="${OPT_DISABLEHTTP2}" \
+    -h2_conn_buffer="${OPT_H2_CONN_BUFFER}" \
+    -h2_stream_buffer="${OPT_H2_STREAM_BUFFER}" \
+    -h2_max_concurrent_streams="${OPT_H2_MAX_STREAMS}"

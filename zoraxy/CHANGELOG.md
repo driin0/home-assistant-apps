@@ -1,5 +1,30 @@
 # Changelog
 
+## 3.3.4-1
+
+- Zoraxy v3.3.4 (stable)
+- **The configuration database is migrated from v333 to v334 on first start, and
+  the migration only runs forward.** Back up the app's directory under
+  `/addon_configs/` before updating; rolling back to 3.3.3 means restoring that
+  backup, not reinstalling the previous version.
+- Upstream moved its ACME client from lego v4 to v5. The Azure DNS provider used
+  by this app (`azuredns`) is unaffected — certificate issuance and renewal were
+  verified against the production Let's Encrypt endpoint before this release.
+- **Removed the `lego_azure_bypass_deprecation` option.** lego v5 deleted the
+  deprecated `azure` DNS provider along with the `LEGO_AZURE_BYPASS_DEPRECATION`
+  variable it read, so the option had nothing left to switch on. If it is set in
+  your configuration, Home Assistant reports `Option '...' does not exist in the
+  schema` once and drops the value; remove it and the warning goes away. Anyone
+  still on the `azure` provider must migrate to `azuredns`.
+- New option `stats_max_entries`, a soft cap on the per-dimension statistics
+  maps. It defaults to `20000` here rather than upstream's unlimited `0`, because
+  unbounded maps are a memory ceiling that gives no warning on a small device.
+  Set it to `0` for upstream behaviour.
+- New HTTP/2 options for the inbound TLS listener: `disablehttp2`,
+  `h2_conn_buffer`, `h2_stream_buffer` and `h2_max_concurrent_streams`. All
+  default to upstream's values, so nothing changes unless you set them. See
+  `DOCS.md` — the two buffers silently ignore any value between 1 and 65535.
+
 ## 3.3.3-1
 
 First public release.

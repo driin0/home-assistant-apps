@@ -1,5 +1,5 @@
 ARG BUILD_FROM=ghcr.io/home-assistant/base:3.24
-FROM zoraxydocker/zoraxy:v3.3.3 AS zoraxy-source
+FROM zoraxydocker/zoraxy:v3.3.4 AS zoraxy-source
 FROM ${BUILD_FROM}
 
 # Copy the Zoraxy binary from the official upstream image

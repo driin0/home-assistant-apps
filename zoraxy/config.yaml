@@ -1,6 +1,6 @@
 name: "Zoraxy"
 description: "A general purpose HTTP reverse proxy and forwarding tool"
-version: "3.3.3-1"
+version: "3.3.4-1"
 slug: "zoraxy"
 url: "https://github.com/driin0/home-assistant-apps/tree/main/zoraxy"
 image: "ghcr.io/driin0/zoraxy"
@@ -47,7 +47,11 @@ schema:
   acmetestmode: bool?
   version: bool?
   webroot: str?
-  lego_azure_bypass_deprecation: bool?
+  stats_max_entries: int(0,)?
+  disablehttp2: bool?
+  h2_conn_buffer: int(0,)?
+  h2_stream_buffer: int(0,)?
+  h2_max_concurrent_streams: int(0,)?
 
   # === AZURE DNS (ACME) ===
   azure_client_id: str?

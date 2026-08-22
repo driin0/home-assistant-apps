@@ -22,23 +22,51 @@
 
 ### Advanced Options
 
-| Option                           | Default   | Description |
-|----------------------------------|-----------|-------------|
-| `plugin`                         | `plugin`  | Plugin directory (relative to `/config`) |
-| `tz`                             | `Etc/UTC` | Timezone (tzdata format) |
-| `autorenew`                      | `86400`   | ACME certificate renew check interval (seconds) |
-| `earlyrenew`                     | `30`      | Days before expiry to trigger certificate renewal |
-| `cfgupgrade`                     | `true`    | Auto-upgrade config on breaking changes |
-| `db`                             | `auto`    | Database backend (`auto`, `leveldb`, `boltdb`) |
-| `enablelog`                      | `true`    | Enable system-wide logging |
-| `mdns`                           | `true`    | Enable mDNS scanner and transponder |
-| `mdnsname`                       |           | Custom mDNS hostname (leave empty for default) |
-| `sshlb`                          | `false`   | Enable loopback SSH (dangerous) |
-| `acmetestmode`                   | `false`   | Run ACME in test/staging mode |
-| `update_geoip`                   | `false`   | Download latest GeoIP data, then start normally |
-| `version`                        | `false`   | Show version and exit |
-| `webroot`                        | `./www`   | Static web server root folder |
-| `lego_azure_bypass_deprecation`  | `false`   | Re-enable the deprecated `azure` DNS provider for ACME |
+| Option              | Default   | Description |
+|---------------------|-----------|-------------|
+| `plugin`            | `plugin`  | Plugin directory (relative to `/config`) |
+| `tz`                | `Etc/UTC` | Timezone (tzdata format) |
+| `autorenew`         | `86400`   | ACME certificate renew check interval (seconds) |
+| `earlyrenew`        | `30`      | Days before expiry to trigger certificate renewal |
+| `cfgupgrade`        | `true`    | Auto-upgrade config on breaking changes |
+| `db`                | `auto`    | Database backend (`auto`, `leveldb`, `boltdb`) |
+| `enablelog`         | `true`    | Enable system-wide logging |
+| `mdns`              | `true`    | Enable mDNS scanner and transponder |
+| `mdnsname`          |           | Custom mDNS hostname (leave empty for default) |
+| `sshlb`             | `false`   | Enable loopback SSH (dangerous) |
+| `acmetestmode`      | `false`   | Run ACME in test/staging mode |
+| `update_geoip`      | `false`   | Download latest GeoIP data, then start normally |
+| `version`           | `false`   | Show version and exit |
+| `webroot`           | `./www`   | Static web server root folder |
+| `stats_max_entries` | `20000`   | Soft cap on the per-dimension statistics maps; the least requested entries are dropped first (`0` = unlimited) |
+
+`stats_max_entries` is the one option where this app does not follow upstream's
+default. Upstream ships `0`, meaning unlimited, and recommends `20000` when the
+cap is enabled; on the small devices this app usually runs on, unbounded
+statistics maps are a memory ceiling nobody sees coming, so `20000` is the
+default here. Set it to `0` for upstream behaviour.
+
+### HTTP/2 Options
+
+`disablehttp2` turns HTTP/2 off on the **inbound** TLS listener — the hop between
+the client and Zoraxy. It does not affect how Zoraxy talks to the proxied
+service, which is a separate connection.
+
+| Option | Default | Description |
+|--------|---------|-------------|
+| `disablehttp2`              | `false` | Serve HTTP/1.1 only on the TLS listener |
+| `h2_conn_buffer`            | `0`     | HTTP/2 upload buffer per connection in bytes (`0` = Go default; values below 65536 are ignored) |
+| `h2_stream_buffer`          | `0`     | HTTP/2 upload buffer per stream in bytes (`0` = Go default; values below 65536 are ignored) |
+| `h2_max_concurrent_streams` | `0`     | HTTP/2 concurrent streams per connection (`0` = Go default) |
+
+A value between 1 and 65535 for either buffer is neither rejected by the app's
+option schema nor reported by Zoraxy: the app starts, serves traffic, and the
+setting does nothing. Use `0`, or a value of at least 65536.
+
+Reach for `disablehttp2` when a client negotiates HTTP/2 over ALPN and then
+fails — typically non-browser WebSocket clients, since HTTP/2 has no `Upgrade:`
+header, or embedded HTTP stacks that break after the handshake instead of
+falling back to HTTP/1.1.
 
 ### Azure DNS Options (ACME)
 

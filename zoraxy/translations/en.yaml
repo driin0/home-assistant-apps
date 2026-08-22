@@ -65,12 +65,40 @@ configuration:
     name: "Web Root"
     description: "Static web server root folder (default: ./www)."
 
-  lego_azure_bypass_deprecation:
-    name: "Lego Azure Bypass Deprecation"
+  stats_max_entries:
+    name: "Statistics Max Entries"
     description: >
-      Temporarily reactivate the deprecated 'azure' DNS provider for ACME.
-      WARNING: The 'azure' provider is deprecated. Migrate to 'azuredns' ASAP.
+      Soft cap on the per-dimension statistics maps. Once exceeded, the entries
+      with the fewest requests are dropped first. Set to 0 for no limit, which
+      lets the maps grow without bound. This app defaults to 20000, the value
+      upstream recommends, rather than upstream's own unlimited default
+      (default: 20000).
+
+  disablehttp2:
+    name: "Disable HTTP/2"
+    description: >
+      Serve HTTP/1.1 only on the inbound TLS listener. It does not change how
+      Zoraxy talks to the proxied service. Enable it for clients that negotiate
+      HTTP/2 and then break, or for non-browser WebSocket clients
       (default: false).
+
+  h2_conn_buffer:
+    name: "HTTP/2 Connection Buffer"
+    description: >
+      HTTP/2 maximum upload buffer per connection, in bytes. 0 uses the Go
+      default; values below 65536 are ignored silently (default: 0).
+
+  h2_stream_buffer:
+    name: "HTTP/2 Stream Buffer"
+    description: >
+      HTTP/2 maximum upload buffer per stream, in bytes. 0 uses the Go default;
+      values below 65536 are ignored silently (default: 0).
+
+  h2_max_concurrent_streams:
+    name: "HTTP/2 Max Concurrent Streams"
+    description: >
+      HTTP/2 maximum concurrent streams per connection. 0 uses the Go default
+      (default: 0).
 
   azure_client_id:
     name: "Azure Client ID"
