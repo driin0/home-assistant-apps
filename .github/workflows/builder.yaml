@@ -5,7 +5,14 @@ env:
   # rootfs covers apps that ship a filesystem overlay; the Python entries cover
   # apps whose source lives in the build context itself — without them a code-only
   # change would silently leave the published image on the previous version.
-  MONITORED_FILES: "config.json config.yaml config.yml Dockerfile rootfs requirements.txt run.sh server.py web.py stats.py tools"
+  # verify.sh and unexposed-flags.txt are here because changing what the checks
+  # assert has to re-run them.
+  #
+  # translations/ is deliberately absent. It is read by the Supervisor from the
+  # repository, never copied into the image, so rebuilding on a wording change
+  # would republish the same version tag under a new digest and orphan the
+  # previous one for nothing. A description edit is checked at the next rebuild.
+  MONITORED_FILES: "config.json config.yaml config.yml Dockerfile rootfs requirements.txt run.sh server.py web.py stats.py tools verify.sh unexposed-flags.txt"
 
 on:
   workflow_dispatch:
