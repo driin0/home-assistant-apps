@@ -1,5 +1,24 @@
 # Changelog
 
+## 2.1.0
+
+Ships [ha-mcp-server 2.1.0](https://github.com/driin0/ha-mcp-server/blob/main/CHANGELOG.md).
+
+Two tools answered with more than an MCP client accepts in one response,
+so on a real instance the answer did not arrive at all: `list_orphan_entities`
+with 678 KB and `validate_all_automations` with 99 KB. Neither number was
+the finding — the findings were "zero abandoned entities" and "zero dead
+references", buried under thousands of rows describing things that were
+working exactly as configured.
+
+Both now list the unexpected kind by default. `list_orphan_entities`
+excludes entities somebody disabled on purpose (and paginates);
+`validate_all_automations` lists only findings reaching `min_severity`,
+which defaults to `error`. In both cases the counts stay outside the
+filter's reach: a tool that reported "nothing found" about a population it
+had stopped counting would be the very fault this validator exists to
+find.
+
 ## 2.0.0
 
 Ships [ha-mcp-server 2.0.0](https://github.com/driin0/ha-mcp-server/blob/main/CHANGELOG.md).
