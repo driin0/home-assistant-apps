@@ -1,5 +1,25 @@
 # Changelog
 
+## 2.0.0
+
+Ships [ha-mcp-server 2.0.0](https://github.com/driin0/ha-mcp-server/blob/main/CHANGELOG.md).
+**Every tool that returned a bare list now returns an object**, so saved
+conversations and prompts that assume a list need updating.
+
+Four new options, each defaulting to the behaviour 1.1.0 already had:
+
+- `mcp_enable_user_management` (off), `mcp_enable_physical_security` (on) and
+  `mcp_enable_addon_api` (off) decide which tool groups are registered at all.
+  A tool that is not registered cannot be called by mistake.
+- `mcp_allowed_hosts` restricts which `Origin` and `Host` headers the MCP
+  endpoint accepts. Empty keeps the current behaviour; it matters only for
+  browser-based clients, which are the ones that send an `Origin`.
+
+Two security fixes for defects that were present in 1.1.0: `create_helper`
+could create a system-admin account, and `call_addon_api` could escape its own
+path prefix — inside this app that reached host shutdown and full backup
+download, because the Supervisor token here carries the manager role.
+
 ## 1.1.0
 
 The server now lives in its own repository,

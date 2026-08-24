@@ -22,6 +22,30 @@ openssl rand -base64 32
 
 Set to `true` to run without authentication. Only acceptable on fully trusted local networks where the MCP port is not reachable from the internet. When this is `true`, `mcp_secret` is not required.
 
+### Which tools get registered
+
+These three decide whether a group of tools exists at all. A tool that is not registered is not in the model's list and cannot be called by mistake — this is a stronger guarantee than instructing the model to avoid it. Changing any of them requires a restart of the add-on.
+
+#### `mcp_enable_user_management` (default: `false`)
+
+`create_user`, `update_user`, `delete_user`. Off by default: these create and delete Home Assistant accounts, including administrators.
+
+#### `mcp_enable_physical_security` (default: `true`)
+
+`lock_control` and `alarm_control`. On by default, because operating locks and the alarm panel is a normal reason to run this server. They are gated at all because they are what a prompt-injection payload would most want to reach — and such a payload can arrive through data this installation does not control, such as an entity's own name or a cast speaker's track title.
+
+Setting this to `false` removes the two named tools, **but not the underlying capability**: `call_service` can invoke `lock.unlock` and `alarm_control_panel.disarm` directly and is not covered by this or any other gate. Turn it off to remove the obvious, discoverable shortcut; do not read it as "the assistant cannot unlock the door".
+
+#### `mcp_enable_addon_api` (default: `false`)
+
+`call_addon_api`, a generic HTTP passthrough into an installed add-on's own API. Off by default: few installations need a language model to have this, and inside this add-on the Supervisor token carries the `manager` role. Unlike the group above, this one is a genuine capability removal — neither `call_service` nor `fire_event` can reach the Supervisor's add-on proxy.
+
+### `mcp_allowed_hosts` (default: empty)
+
+Comma-separated list of hostnames the MCP endpoint accepts in the `Origin` and `Host` headers, for example `homeassistant.local,192.168.1.50`. Empty accepts any.
+
+This defends against a web page in your browser making requests to the add-on in the background. It matters only for browser-based clients: Claude Code and other non-browser MCP clients send no `Origin` header and are unaffected either way.
+
 ## Claude Code setup
 
 Add to your `.mcp.json`:
