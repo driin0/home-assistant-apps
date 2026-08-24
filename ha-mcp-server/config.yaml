@@ -36,6 +36,10 @@ options:
   remote_prefixes: ""
   alexa_keywords: "echo,alexa"
   default_language: ""
+  mcp_enable_user_management: false
+  mcp_enable_physical_security: true
+  mcp_enable_addon_api: false
+  mcp_allowed_hosts: ""
 
 schema:
   mcp_port: int
@@ -44,3 +48,7 @@ schema:
   remote_prefixes: str?
   alexa_keywords: str?
   default_language: str?
+  mcp_enable_user_management: bool?
+  mcp_enable_physical_security: bool?
+  mcp_enable_addon_api: bool?
+  mcp_allowed_hosts: str?

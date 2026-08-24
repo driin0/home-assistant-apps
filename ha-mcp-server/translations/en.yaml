@@ -34,3 +34,33 @@ configuration:
       specify one, e.g. it, de, fr. Leave empty to follow the language Home Assistant is
       configured with. Set it when the two differ — instances are often kept in English to
       obtain English entity IDs while the people using them speak another language.
+  mcp_enable_user_management:
+    name: Enable user management
+    description: >
+      Off by default. Registers create_user, update_user and delete_user. Almost nobody
+      needs a language model creating Home Assistant accounts, and this is the tier where a
+      privileged action disguised as a benign one was demonstrated, so the tools are simply
+      not offered unless you ask for them. Home Assistant's user registry is WebSocket-only,
+      so call_service cannot reach it either way.
+  mcp_enable_physical_security:
+    name: Enable physical security tools
+    description: >
+      On by default. Registers lock_control and alarm_control. Controlling locks and alarms
+      is a normal reason to run this server, so they stay enabled — a guardrail everyone
+      switches off immediately protects nobody. Turn this off if the assistant should not be
+      able to unlock a door or disarm an alarm. Note that call_service can still reach those
+      services directly; this gate removes the named tools, not the capability.
+  mcp_enable_addon_api:
+    name: Enable add-on API proxy
+    description: >
+      Off by default. Registers call_addon_api, a generic HTTP proxy into an add-on's own
+      API. Few installations need it, and in the add-on deployment it carries a
+      manager-role Supervisor token, so it is not offered unless you ask for it.
+  mcp_allowed_hosts:
+    name: Allowed hosts
+    description: >
+      Optional. Comma-separated hostnames or IPs this server may be reached at from a
+      browser. Requests carrying an Origin header are checked against this list plus
+      localhost, which is what stops DNS rebinding; requests without one — every ordinary
+      MCP client — are unaffected. Set this only if you drive the server from a
+      browser-based client at a name other than localhost.

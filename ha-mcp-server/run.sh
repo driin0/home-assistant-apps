@@ -6,6 +6,10 @@ MCP_ALLOW_NO_AUTH=$(bashio::config 'mcp_allow_no_auth' 'false')
 REMOTE_PREFIXES=$(bashio::config 'remote_prefixes' '')
 ALEXA_KEYWORDS=$(bashio::config 'alexa_keywords' 'echo,alexa')
 DEFAULT_LANGUAGE=$(bashio::config 'default_language' '')
+MCP_ENABLE_USER_MANAGEMENT=$(bashio::config 'mcp_enable_user_management' 'false')
+MCP_ENABLE_PHYSICAL_SECURITY=$(bashio::config 'mcp_enable_physical_security' 'true')
+MCP_ENABLE_ADDON_API=$(bashio::config 'mcp_enable_addon_api' 'false')
+MCP_ALLOWED_HOSTS=$(bashio::config 'mcp_allowed_hosts' '')
 
 if [ -z "${MCP_SECRET}" ] && [ "${MCP_ALLOW_NO_AUTH}" != "true" ]; then
     while true; do
@@ -23,6 +27,10 @@ export MCP_ALLOW_NO_AUTH="${MCP_ALLOW_NO_AUTH}"
 export HA_REMOTE_PREFIXES="${REMOTE_PREFIXES}"
 export HA_ALEXA_KEYWORDS="${ALEXA_KEYWORDS}"
 export HA_DEFAULT_LANGUAGE="${DEFAULT_LANGUAGE}"
+export MCP_ENABLE_USER_MANAGEMENT="${MCP_ENABLE_USER_MANAGEMENT}"
+export MCP_ENABLE_PHYSICAL_SECURITY="${MCP_ENABLE_PHYSICAL_SECURITY}"
+export MCP_ENABLE_ADDON_API="${MCP_ENABLE_ADDON_API}"
+export MCP_ALLOWED_HOSTS="${MCP_ALLOWED_HOSTS}"
 export UI_PORT="47822"
 # Status UI is exposed only via HA Supervisor Ingress — authentication is handled
 # upstream by HA. Skip the Basic Auth middleware (Ingress requests carry no
