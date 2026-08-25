@@ -73,6 +73,8 @@ image for Home Assistant.
 
 ## Licence
 
+Copyright (C) 2026 Riccardo Riina (driin0)
+
 AGPL-3.0.
 
 Zoraxy itself is AGPL-3.0 software by Toby Chui; see [NOTICE](./NOTICE) for the
