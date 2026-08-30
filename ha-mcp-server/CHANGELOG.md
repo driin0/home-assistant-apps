@@ -1,5 +1,19 @@
 # Changelog
 
+## 2.2.1
+
+2.2.0 did not start: `ModuleNotFoundError: No module named 'tool_tracking'`.
+
+Both this Dockerfile and the upstream one copied the application's
+root-level modules by name, and a module added in 2.2.0 was never added to
+either list. The builds were green, the tests were green — none of them
+runs against the built image — and the add-on crashed on the first line
+that mattered.
+
+Both lines are globs now, and upstream has a test that parses its
+Dockerfile and fails when a module the server imports would not reach the
+image.
+
 ## 2.2.0
 
 Ships [ha-mcp-server 2.2.0](https://github.com/driin0/ha-mcp-server/blob/main/CHANGELOG.md).

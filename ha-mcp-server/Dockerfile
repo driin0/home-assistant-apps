@@ -6,7 +6,7 @@ ARG BUILD_FROM=ghcr.io/home-assistant/base-python:3.13-alpine3.24
 # The application source lives in its own repository and is consumed as a
 # published image: there is no copy of it here to keep in sync. Bumping the tag
 # on the line below is what releases a new version of this app.
-FROM ghcr.io/driin0/ha-mcp-server:2.2.0 AS app
+FROM ghcr.io/driin0/ha-mcp-server:2.2.1 AS app
 
 FROM ${BUILD_FROM}
 
@@ -17,7 +17,11 @@ FROM ${BUILD_FROM}
 # requirements.txt resolved twice. No gcc, no build toolchain, no compilation.
 COPY --from=app /usr/local/lib/python3.13/site-packages /usr/local/lib/python3.13/site-packages
 
-COPY --from=app /app/server.py /app/web.py /app/stats.py /app/
+# A glob, not a list of names. 2.2.0 enumerated them, tool_tracking.py
+# was added upstream and not added here, and the add-on crashed on
+# startup with ModuleNotFoundError - past a green build and a green
+# test suite, none of which runs against this image.
+COPY --from=app /app/*.py /app/
 COPY --from=app /app/tools/ /app/tools/
 
 # If a future base image breaks the ABI, this fails the build instead of the
