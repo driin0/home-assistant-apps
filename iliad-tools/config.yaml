@@ -1,6 +1,6 @@
 name: "Iliad Tools"
 description: "Portale di amministrazione per iliadbox (router Iliad Italia, Freebox OS)"
-version: "1.0.0"
+version: "1.0.1"
 slug: "iliad_tools"
 init: false
 
