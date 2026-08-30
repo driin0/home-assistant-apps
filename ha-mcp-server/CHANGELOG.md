@@ -1,5 +1,41 @@
 # Changelog
 
+## 2.2.0
+
+Ships [ha-mcp-server 2.2.0](https://github.com/driin0/ha-mcp-server/blob/main/CHANGELOG.md).
+
+A write that timed out was reported as a failure while Home Assistant was
+still executing it. Measured on a real instance through the 2.1.0 add-on:
+an automation whose actions ran for twenty seconds completed **ten seconds
+after the caller had been told the tool errored**, and the text it got was
+`Error executing tool trigger_automation: timed out` — under a prefix whose
+every natural reading is "it did not happen", which is the one thing that
+was not known.
+
+A timeout is now described by what is actually known about it. A write says
+the outcome is unknown, that it may already have been applied, what to read
+back, and that calling again may apply it twice. A read says it had no side
+effect and is safe to repeat. Both transports — on WebSocket the error used
+to arrive with no stated cause at all, because the underlying exception's
+text is the empty string.
+
+**Nothing a tool returns changes.** A timeout still surfaces as an error;
+only its wording is different. Converting these into returned results
+touches around 160 tools and is a future major release.
+
+### Added
+
+- **`instance_health`** — entities with no usable state, grouped by the
+  integration that owns them, with Home Assistant's own config entry state
+  on the same row, plus entries that are not loaded and open repair issues.
+  One call for what previously took five.
+
+  The signal is "every entity this integration owns is down", not "down for
+  N hours": `last_changed` resets on every Home Assistant restart, so on a
+  real instance three hours after one, all 29 affected integrations
+  reported the same 3.1 hours. Counts always cover the whole instance,
+  whatever filter is applied to the listing.
+
 ## 2.1.0
 
 Ships [ha-mcp-server 2.1.0](https://github.com/driin0/ha-mcp-server/blob/main/CHANGELOG.md).

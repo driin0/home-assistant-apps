@@ -6,7 +6,7 @@ ARG BUILD_FROM=ghcr.io/home-assistant/base-python:3.13-alpine3.24
 # The application source lives in its own repository and is consumed as a
 # published image: there is no copy of it here to keep in sync. Bumping the tag
 # on the line below is what releases a new version of this app.
-FROM ghcr.io/driin0/ha-mcp-server:2.1.0 AS app
+FROM ghcr.io/driin0/ha-mcp-server:2.2.0 AS app
 
 FROM ${BUILD_FROM}
 
