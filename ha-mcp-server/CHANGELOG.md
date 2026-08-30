@@ -1,5 +1,25 @@
 # Changelog
 
+## 2.4.0
+
+Ships [ha-mcp-server 2.4.0](https://github.com/driin0/ha-mcp-server/blob/main/CHANGELOG.md).
+
+`list_repairs` told you a repair's *type* and nothing else — `dead_entities`,
+with no way to learn what was dead. Home Assistant puts all of that in
+`translation_placeholders`, and the tool discarded it: which entities, which
+blueprint, which token, and Home Assistant's own suggested correction
+(`did you mean …?`, `deleted on 2025-06-14`).
+
+It is reported now, bounded: a long placeholder becomes `{count, sample}`,
+since one repair on a real instance carried 1424 entity ids and another 416
+orphaned statistics.
+
+Two more fields come with it. `is_fixable` says whether Home Assistant
+offers a guided fix rather than only a notice — 17 of 33 repairs on the
+instance this was measured against. `issue_domain` names what the repair is
+*about*, as opposed to `domain`, which is who raised it: most repairs are
+raised by Spook, and knowing that told you nothing.
+
 ## 2.3.0
 
 Ships [ha-mcp-server 2.3.0](https://github.com/driin0/ha-mcp-server/blob/main/CHANGELOG.md).
