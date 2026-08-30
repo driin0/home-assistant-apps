@@ -8,7 +8,7 @@ ARG BUILD_FROM=ghcr.io/home-assistant/base:3.24
 # The application source lives in its own repository and is consumed as a
 # published image: there is no copy of it here to keep in sync. Bumping the tag
 # on the line below is what releases a new version of this app.
-FROM ghcr.io/driin0/iliad-tools:1.0.1 AS app
+FROM ghcr.io/driin0/iliad-tools:1.0.2 AS app
 
 FROM ${BUILD_FROM}
 

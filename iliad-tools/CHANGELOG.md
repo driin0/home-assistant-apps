@@ -1,5 +1,24 @@
 # Changelog
 
+## 1.0.2
+
+Distribuisce `ghcr.io/driin0/iliad-tools:1.0.2`.
+
+Gli interni con più contatti registrati tornano a squillare sulle chiamate in
+entrata dai numeri diretti dei trunk 3CX. Nel dialplan generato per quel
+contesto mancavano le due righe che risolvono il contatto dell'interno, e
+Asterisk scartava la destinazione **in silenzio**: la chiamata funzionava e gli
+altri interni squillavano, quello no, senza alcun errore nei log.
+
+Riguarda solo chi ha un trunk 3CX con "squilla gli interni locali sui DID"
+attivo e almeno un interno impostato come multi-contatto.
+
+**La configurazione già installata non si aggiorna da sola**: dopo
+l'aggiornamento va rigenerato l'archivio dal tab Asterisk e ridistribuito.
+
+Note complete nel
+[CHANGELOG del progetto](https://github.com/driin0/iliad-tools/blob/main/CHANGELOG.md).
+
 ## 1.0.1
 
 Distribuisce `ghcr.io/driin0/iliad-tools:1.0.1`.
