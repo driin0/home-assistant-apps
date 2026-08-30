@@ -1,5 +1,27 @@
 # Changelog
 
+## 2.3.0
+
+Ships [ha-mcp-server 2.3.0](https://github.com/driin0/ha-mcp-server/blob/main/CHANGELOG.md).
+
+`instance_health` ranked integrations by how many entities they had down.
+On a real instance that put `ibeacon` first with 1424 of 1424 unavailable —
+beacons out of range, their ordinary resting state — and buried the camera,
+the NAS and the printer that had actually stopped. Size is how loud a fault
+is, not how wrong it is.
+
+Rows now sort by Home Assistant's own verdict: a config entry in trouble
+first (`setup_error`, then `not_loaded`, then `setup_retry` — decreasing
+chance of recovering unattended), then everything-down-with-a-healthy-entry,
+then partial outages. Partial outages with a broken entry become visible for
+the first time; on the instance this was measured against, three of them
+were.
+
+An integration with several config entries now reports its worst, rather
+than whichever Home Assistant happened to return last, and
+`config_entry_state` distinguishes `loaded` from "this integration has no
+config entry at all".
+
 ## 2.2.1
 
 2.2.0 did not start: `ModuleNotFoundError: No module named 'tool_tracking'`.
