@@ -5,7 +5,14 @@ env:
   # rootfs covers apps that ship a filesystem overlay; the Python entries cover
   # apps whose source lives in the build context itself — without them a code-only
   # change would silently leave the published image on the previous version.
-  MONITORED_FILES: "config.json config.yaml config.yml Dockerfile rootfs requirements.txt run.sh server.py web.py stats.py tools"
+  # verify.sh and unexposed-flags.txt are here because changing what the checks
+  # assert has to re-run them.
+  #
+  # translations/ is deliberately absent. It is read by the Supervisor from the
+  # repository, never copied into the image, so rebuilding on a wording change
+  # would republish the same version tag under a new digest and orphan the
+  # previous one for nothing. A description edit is checked at the next rebuild.
+  MONITORED_FILES: "config.json config.yaml config.yml Dockerfile rootfs requirements.txt run.sh server.py web.py stats.py tools verify.sh unexposed-flags.txt"
 
 on:
   workflow_dispatch:
@@ -59,12 +66,26 @@ jobs:
             || [[ "${CHANGED_FILES}" =~ \.github/workflows/(builder|build-app)\.yaml ]]; then
             changed_apps=(${APPS})
           else
+            # Compare whole paths rather than searching for a substring.
+            # '${app}/${file}' used to be interpolated into a regex matched
+            # against the whole list at once, which had two consequences: an app
+            # whose name ends with another app's name matched it as well
+            # ('iliad-tools/run.sh' contains 'tools/run.sh'), and the dots in
+            # names like config.yaml were metacharacters. Neither misfires with
+            # the apps in this repository today, and both would be puzzling the
+            # day they did.
+            #
+            # The second arm covers the entries that are directories — rootfs,
+            # tools — where what changes is a file underneath them.
             for app in ${APPS}; do
               for file in ${MONITORED_FILES}; do
-                if [[ "${CHANGED_FILES}" =~ ${app}/${file} ]]; then
-                  changed_apps+=("${app}")
-                  break
-                fi
+                for changed in ${CHANGED_FILES}; do
+                  if [[ "${changed}" == "${app}/${file}" \
+                     || "${changed}" == "${app}/${file}/"* ]]; then
+                    changed_apps+=("${app}")
+                    break 2
+                  fi
+                done
               done
             done
           fi
