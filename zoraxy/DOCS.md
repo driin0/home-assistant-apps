@@ -68,6 +68,21 @@ fails — typically non-browser WebSocket clients, since HTTP/2 has no `Upgrade:
 header, or embedded HTTP stacks that break after the handshake instead of
 falling back to HTTP/1.1.
 
+### HTTP/3 (QUIC)
+
+Zoraxy 3.3.5 can serve HTTP/3 on the inbound TLS listener. It is **off by
+default** and switched on in Zoraxy's own UI, under **Global Settings → Enable
+HTTP/3 (QUIC)** — not in this app's options. Once on, Zoraxy listens on UDP on
+the same port as HTTPS and advertises it to browsers with an `Alt-Svc` header.
+
+For that to work from outside, UDP `443` has to reach the Home Assistant host:
+forward it on your router alongside TCP `443`. HTTP/3 needs TLS, and Zoraxy
+skips the QUIC listener when the PROXY protocol is enabled.
+
+| Option | Default | Description |
+|--------|---------|-------------|
+| `h3_max_concurrent_streams` | `0` | HTTP/3 concurrent streams per connection (`0` = quic-go default) |
+
 ### Azure DNS Options (ACME)
 
 These options are exported as environment variables and read by Zoraxy's built-in
@@ -130,6 +145,7 @@ default, plugins live in `/config/plugin`.
 | `8000` | Web management interface |
 | `80`   | HTTP reverse proxy |
 | `443`  | HTTPS reverse proxy |
+| `443/udp` | HTTP/3 (QUIC) — answered only when HTTP/3 is enabled in Zoraxy's Global Settings; disable the mapping if the host port is taken |
 
 ## Security Recommendations
 
