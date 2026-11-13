@@ -55,15 +55,23 @@ jobs:
           changed_apps=()
 
           # Rebuild every app when the set of changed files cannot be determined,
-          # when this workflow itself changed, or on a manual run. An empty list is
-          # not the same as "nothing relevant changed": a push that rewrote history
-          # leaves the previous commit unrelated to the new one, so the diff cannot
-          # be computed and no file is reported at all. Building everything is the
-          # safe reading — otherwise the very push that publishes a release would
-          # silently skip its build.
+          # or on a manual run. An empty list is not the same as "nothing relevant
+          # changed": a push that rewrote history leaves the previous commit
+          # unrelated to the new one, so the diff cannot be computed and no file
+          # is reported at all. Building everything is the safe reading —
+          # otherwise the very push that publishes a release would silently skip
+          # its build.
+          #
+          # A change to the build workflows themselves rebuilds every app on a
+          # pull request only, where nothing is published and the point is to
+          # prove the new workflow against every app. On a push to main the same
+          # rule would republish every unchanged app under its existing version
+          # tag with a new digest, orphaning the image users already run. There
+          # the per-app filter below decides, as for any other push.
           if [[ -z "${CHANGED_FILES}" ]] \
             || [[ "${EVENT_NAME}" == "workflow_dispatch" ]] \
-            || [[ "${CHANGED_FILES}" =~ \.github/workflows/(builder|build-app)\.yaml ]]; then
+            || { [[ "${EVENT_NAME}" == "pull_request" ]] \
+                 && [[ "${CHANGED_FILES}" =~ \.github/workflows/(builder|build-app)\.yaml ]]; }; then
             changed_apps=(${APPS})
           else
             # Compare whole paths rather than searching for a substring.
