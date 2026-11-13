@@ -145,7 +145,7 @@ default, plugins live in `/config/plugin`.
 | `8000` | Web management interface |
 | `80`   | HTTP reverse proxy |
 | `443`  | HTTPS reverse proxy |
-| `443/udp` | HTTP/3 (QUIC) — used only when HTTP/3 is enabled in Zoraxy's Global Settings |
+| `443/udp` | HTTP/3 (QUIC) — answered only when HTTP/3 is enabled in Zoraxy's Global Settings; disable the mapping if the host port is taken |
 
 ## Security Recommendations
 
