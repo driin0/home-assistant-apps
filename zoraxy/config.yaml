@@ -1,6 +1,6 @@
 name: "Zoraxy"
 description: "A general purpose HTTP reverse proxy and forwarding tool"
-version: "3.3.4-1"
+version: "3.3.5-1"
 slug: "zoraxy"
 url: "https://github.com/driin0/home-assistant-apps/tree/main/zoraxy"
 image: "ghcr.io/driin0/zoraxy"
@@ -20,6 +20,7 @@ webui: "http://[HOST]:[PORT:8000]"
 ports:
   80/tcp: 80
   443/tcp: 443
+  443/udp: 443
   8000/tcp: 8000
 
 options:
@@ -52,6 +53,7 @@ schema:
   h2_conn_buffer: int(0,)?
   h2_stream_buffer: int(0,)?
   h2_max_concurrent_streams: int(0,)?
+  h3_max_concurrent_streams: int(0,)?
 
   # === AZURE DNS (ACME) ===
   azure_client_id: str?

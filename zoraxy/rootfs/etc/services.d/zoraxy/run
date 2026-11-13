@@ -39,6 +39,7 @@ OPT_DISABLEHTTP2="$(config_get 'disablehttp2' 'false')"
 OPT_H2_CONN_BUFFER="$(config_get 'h2_conn_buffer' '0')"
 OPT_H2_STREAM_BUFFER="$(config_get 'h2_stream_buffer' '0')"
 OPT_H2_MAX_STREAMS="$(config_get 'h2_max_concurrent_streams' '0')"
+OPT_H3_MAX_STREAMS="$(config_get 'h3_max_concurrent_streams' '0')"
 
 # ===============================
 #       APPLY ENV VARS
@@ -93,4 +94,5 @@ exec zoraxy \
     -disablehttp2="${OPT_DISABLEHTTP2}" \
     -h2_conn_buffer="${OPT_H2_CONN_BUFFER}" \
     -h2_stream_buffer="${OPT_H2_STREAM_BUFFER}" \
-    -h2_max_concurrent_streams="${OPT_H2_MAX_STREAMS}"
+    -h2_max_concurrent_streams="${OPT_H2_MAX_STREAMS}" \
+    -h3_max_concurrent_streams="${OPT_H3_MAX_STREAMS}"

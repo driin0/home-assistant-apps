@@ -100,6 +100,13 @@ configuration:
       HTTP/2 maximum concurrent streams per connection. 0 uses the Go default
       (default: 0).
 
+  h3_max_concurrent_streams:
+    name: "HTTP/3 Max Concurrent Streams"
+    description: >
+      HTTP/3 (QUIC) maximum concurrent streams per connection. Only applies when
+      HTTP/3 is enabled in Zoraxy's Global Settings. 0 uses the quic-go default
+      (default: 0).
+
   azure_client_id:
     name: "Azure Client ID"
     description: >

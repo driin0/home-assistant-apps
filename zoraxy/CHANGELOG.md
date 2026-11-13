@@ -1,5 +1,21 @@
 # Changelog
 
+## 3.3.5-1
+
+- Zoraxy v3.3.5 (stable). Upstream calls this a security release: several
+  advisories are fixed, among them CVE-2026-111943. Updating is recommended.
+- **HTTP/3 (QUIC) support.** Off by default; turn it on in Zoraxy's UI under
+  Global Settings. The app now also publishes UDP `443` so the QUIC listener is
+  reachable — forward UDP `443` on your router as well if you want HTTP/3 from
+  outside. With HTTP/3 off, nothing listens on that port.
+- New option `h3_max_concurrent_streams`, the HTTP/3 counterpart of
+  `h2_max_concurrent_streams`. Defaults to upstream's `0`, so nothing changes
+  unless you set it.
+- The build now checks the packaging contract against the built image: every
+  flag the Zoraxy binary defines must be either passed by the startup script or
+  deliberately listed as unexposed, so a new upstream option can no longer be
+  missed silently.
+
 ## 3.3.4-1
 
 - Zoraxy v3.3.4 (stable)
