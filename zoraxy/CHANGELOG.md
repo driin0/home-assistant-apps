@@ -11,10 +11,10 @@
   still reserved for the app: if something else on the host already uses UDP
   `443`, disable that mapping in the app's Network settings.
 - On first start Zoraxy migrates its ACME certificate settings (`conf/certs/*.json`:
-  `recursive_ns` becomes `disable_recursive_nss_check`). Unlike 3.3.4 this does
-  not touch the database, and 3.3.4 still starts on the migrated files; going
-  back only loses the DNS-01 propagation check setting. A backup of the app's
-  directory under `/addon_configs/` before updating is still the safe way back.
+  `recursive_ns` becomes `disable_recursive_nss_check`). Unlike 3.3.4, the
+  database is not touched — only the DNS-01 propagation check setting of each
+  certificate is rewritten. A backup of the app's directory under
+  `/addon_configs/` before updating remains the safe way back.
 - New option `h3_max_concurrent_streams`, the HTTP/3 counterpart of
   `h2_max_concurrent_streams`. Defaults to upstream's `0`, so nothing changes
   unless you set it.
