@@ -1,5 +1,24 @@
 # Changelog
 
+## 2.4.1
+
+Ships [ha-mcp-server 2.4.1](https://github.com/driin0/ha-mcp-server/blob/main/CHANGELOG.md).
+
+`get_addon` promised to return credential-looking option values as
+`<redacted>`, but only checked top-level option names. A password one level
+down — the SSH add-on's `options.ssh.password`, Mosquitto's list of logins —
+and a token inside a free-text option, such as an install command carrying
+`?enroll_token=…` in a URL, came back in clear.
+
+The whole options tree is now walked, and string values are searched for the
+shapes a credential takes: credential-named query parameters, assignments and
+`name: value` lines (quoted or not), `--token` style flags, `user:password@`
+in URLs, `Authorization:` headers and `Bearer` tokens. Names are matched word
+by word too, so `mqtt_pass` and Zigbee2MQTT's `network_key` are caught.
+
+If you called `get_addon` on an earlier version, rotate any credential it
+may have returned.
+
 ## 2.4.0
 
 Ships [ha-mcp-server 2.4.0](https://github.com/driin0/ha-mcp-server/blob/main/CHANGELOG.md).
